@@ -5,13 +5,18 @@ public class BankAccount {
     private String dateOfBirth;
     private String accountNumber;
     private double balance;
+    private String accountType;
+    private double overdraft;
 
+    // Constructor
     public BankAccount(String firstName, String lastName, String dateOfBirth, String accountNumber){
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.accountNumber = accountNumber;
         this.balance = 0.0; // new bank account set at 0 before any deposits
+        this.accountType = accountType;
+        this.overdraft = overdraft;
     }
 
     // First name Getter
@@ -63,6 +68,26 @@ public class BankAccount {
         this.balance = balance;
     }
 
+    // accountType Getter
+    public String getAccountType(String accountType) {
+        return accountType = accountType;
+    }
+
+    // accountType Setter
+    public void setAccountType(String accountType){
+        this.accountType = accountType;
+    }
+
+    // overdraft Getter
+    public double getOverdraft() {
+        return overdraft;
+    }
+
+    // overdraft Setter
+    public void setOverdraft(double overdraft) {
+        this.overdraft = overdraft;
+    }
+
     // Depositing money method
     public void deposit(double amount) {
         if (amount > 0){ // takes in amount
@@ -85,8 +110,8 @@ public class BankAccount {
 
     public static void main(String[] args){
         BankAccount account = new BankAccount("Emily", "Pink", "01.12.1970", "1234567");
-        account.deposit(100);
-        account.withdraw(20);
+        account.deposit(100.00);
+        account.withdraw(20.00);
         account.displayAccountData();
     }
 
