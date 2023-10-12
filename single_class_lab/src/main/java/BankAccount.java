@@ -1,17 +1,23 @@
+import java.time.LocalDate;
+
 public class BankAccount {
 
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private int accountNumber;
     private double balance;
+    private String accountType;
+    private double overdraft;
 
-    public BankAccount(String firstName, String lastName, String dateOfBirth, int accountNumber) {
+    public BankAccount(String firstName, String lastName, LocalDate dateOfBirth, int accountNumber, String accountType, double overdraft) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.accountNumber = accountNumber;
         this.balance = 0;
+        this.accountType = accountType;
+        this.overdraft = overdraft; // assume to be negative
     }
 
     public void deposit(double amount){
@@ -19,15 +25,23 @@ public class BankAccount {
     }
 
     public void withdraw(double amount){
-        this.balance -= amount;
+        if ((this.balance - amount) >= this.overdraft){ // only withdraw if amount
+            // doesn't put you over overdraft
+            this.balance -= amount;
+        }
     }
 
     public void payInterest(){
-        double interestToPay = this.balance * 0.05;
-        this.balance += interestToPay;
+        if (this.accountType.equals("savings")){
+            double interestToPay = this.balance * 0.1;
+            this.balance += interestToPay;
+        } else if (this.accountType.equals("current")) {
+            double interestToPay = this.balance * 0.05;
+            this.balance += interestToPay;
+        }
     }
 
-    //    getters and setters
+    //    GETTERS & SETTERS
     public String getFirstName() {
         return firstName;
     }
@@ -44,11 +58,11 @@ public class BankAccount {
         this.lastName = lastName;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -66,5 +80,21 @@ public class BankAccount {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    public double getOverdraft() {
+        return overdraft;
+    }
+
+    public void setOverdraft(double overdraft) {
+        this.overdraft = overdraft;
     }
 }

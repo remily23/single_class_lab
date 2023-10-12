@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BankAccountTest {
@@ -7,31 +10,60 @@ public class BankAccountTest {
     BankAccount bankAccount;
 
     @BeforeEach
-    public void setUp(){
-        bankAccount = new BankAccount("Eoan", "Odea", "4-10-1983", 00126);
+    public void setUp() {
+        bankAccount = new BankAccount("Eoan", "Odea", LocalDate.of(1985, 10, 4), 00126, "current", -50.00);
     }
 
     @Test
-    public void canDepositFunds(){
-        bankAccount.deposit(10);
-        assertThat(bankAccount.getBalance()).isEqualTo(10);
+    public void canDeposit(){
+        bankAccount.deposit(100);
+        assertThat(bankAccount.getBalance()).isEqualTo(100);
     }
 
     @Test
-    public void canWithdrawFunds(){
-        bankAccount.deposit(10);
-        bankAccount.withdraw(5);
-        assertThat(bankAccount.getBalance()).isEqualTo(5);
+    public void canWithdraw__true(){
+        bankAccount.deposit(100);
+        bankAccount.withdraw(50);
+        assertThat(bankAccount.getBalance()).isEqualTo(50);
     }
 
     @Test
-    public void canPayInterest(){
+    public void canWithdrawInOverdraft__true(){
+        bankAccount.deposit(100);
+        bankAccount.withdraw(125);
+        assertThat(bankAccount.getBalance()).isEqualTo(-25);
+    }
+
+    @Test
+    public void canWithdraw__false(){
+        bankAccount.deposit(100);
+        bankAccount.withdraw(200);
+        assertThat(bankAccount.getBalance()).isEqualTo(100);
+    }
+
+    @Test
+    public void canPayInterest__currentAccount(){
         bankAccount.deposit(100);
         bankAccount.payInterest();
         assertThat(bankAccount.getBalance()).isEqualTo(105);
     }
 
-    //            Tests for getters and setters
+    @Test
+    public void canPayInterest__savingsAccount(){
+        BankAccount savingsAccount = new BankAccount(
+                "Colin",
+                "Farquhar",
+                LocalDate.of(1987, 6, 12),
+                12345,
+                "savings",
+                0
+        );
+        savingsAccount.deposit(100);
+        savingsAccount.payInterest();
+        assertThat(savingsAccount.getBalance()).isEqualTo(110);
+    }
+
+    //    TESTS FOR GETTERS & SETTERS
     @Test
     public void hasFirstName(){
         assertThat(bankAccount.getFirstName()).isEqualTo("Eoan");
@@ -56,13 +88,13 @@ public class BankAccountTest {
 
     @Test
     public void hasDateOfBirth(){
-        assertThat(bankAccount.getDateOfBirth()).isEqualTo("4-10-1983");
+        assertThat(bankAccount.getDateOfBirth()).isEqualTo("1985-10-04");
     }
 
     @Test
     public void canSetDateOfBirth(){
-        bankAccount.setDateOfBirth("5-9-1995");
-        assertThat(bankAccount.getDateOfBirth()).isEqualTo("5-9-1995");
+        bankAccount.setDateOfBirth(LocalDate.of(1985, 9, 5));
+        assertThat(bankAccount.getDateOfBirth()).isEqualTo("1985-09-05");
     }
 
     @Test
@@ -77,14 +109,25 @@ public class BankAccountTest {
     }
 
     @Test
-    public void canGetBalance(){
-        assertThat(bankAccount.getBalance()).isEqualTo(0);
+    public void hasAccountType(){
+        assertThat(bankAccount.getAccountType()).isEqualTo("current");
     }
 
     @Test
-    public void canSetBalance(){
-        bankAccount.setBalance(100);
-        assertThat(bankAccount.getBalance()).isEqualTo(100);
+    public void canSetAccountType(){
+        bankAccount.setAccountType("savings");
+        assertThat(bankAccount.getAccountType()).isEqualTo("savings");
+    }
+
+    @Test
+    public void hasOverdraft(){
+        assertThat(bankAccount.getOverdraft()).isEqualTo(-50);
+    }
+
+    @Test
+    public void canSetOverdraft(){
+        bankAccount.setOverdraft(-100);
+        assertThat(bankAccount.getOverdraft()).isEqualTo(-100);
     }
 
 }
