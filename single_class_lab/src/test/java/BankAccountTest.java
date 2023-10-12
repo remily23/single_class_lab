@@ -1,50 +1,90 @@
-public class BankAccountTest {
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-    public class BankAccountTest {
-        private BankAccount bankAccount; // to link to BankAccount attributes/properties
+public class BankAccountTest {
 
-        // Deposit Test
-        @Test
-        void canDeposit(){
+    BankAccount bankAccount;
 
-// Given
-            deposit deposit = new deposit();
-            double startingBalance = bankAccount.getBalance();
-            double depositAmount = 100;
+    @BeforeEach
+    public void setUp(){
+        bankAccount = new BankAccount("Eoan", "Odea", "4-10-1983", 00126);
+    }
 
-// When
-            bankAccount.deposit(depositAmount);
+    @Test
+    public void canDepositFunds(){
+        bankAccount.deposit(10);
+        assertThat(bankAccount.getBalance()).isEqualTo(10);
+    }
 
-// Then
-            double updatedBalance = startingBalance + depositAmount;
-            assertThat(updatedBalance).isEqualTo(depositAmount);
-        }
+    @Test
+    public void canWithdrawFunds(){
+        bankAccount.deposit(10);
+        bankAccount.withdraw(5);
+        assertThat(bankAccount.getBalance()).isEqualTo(5);
+    }
 
-        // Withdrawal Test
-        @Test
-        void canWithdraw(){
-        }
+    @Test
+    public void canPayInterest(){
+        bankAccount.deposit(100);
+        bankAccount.payInterest();
+        assertThat(bankAccount.getBalance()).isEqualTo(105);
+    }
 
-// Given
-    bankAccount.deposit(100); // starting balance of £100
-        double startingBalance = bankAccount.getBalance();
-        double withDrawalAmount = 20;
+    //            Tests for getters and setters
+    @Test
+    public void hasFirstName(){
+        assertThat(bankAccount.getFirstName()).isEqualTo("Eoan");
+    }
 
-// When
-        bankAccount.withdrawal;(withdrawalAmount);
+    @Test
+    public void canSetFirstName(){
+        bankAccount.setFirstName("Daniel");
+        assertThat(bankAccount.getFirstName()).isEqualTo("Daniel");
+    }
 
-        // Then
-        double updatedBalance = initialBalance - withDrawalAmount;
-        assertThat(updatedBalance, bankAccount.getBalance());
+    @Test
+    public void hasLastName(){
+        assertThat(bankAccount.getLastName()).isEqualTo("Odea");
+    }
 
+    @Test
+    public void canSetLastName(){
+        bankAccount.setLastName("DeVito");
+        assertThat(bankAccount.getLastName()).isEqualTo("DeVito");
+    }
 
+    @Test
+    public void hasDateOfBirth(){
+        assertThat(bankAccount.getDateOfBirth()).isEqualTo("4-10-1983");
+    }
+
+    @Test
+    public void canSetDateOfBirth(){
+        bankAccount.setDateOfBirth("5-9-1995");
+        assertThat(bankAccount.getDateOfBirth()).isEqualTo("5-9-1995");
+    }
+
+    @Test
+    public void hasAccountNumber(){
+        assertThat(bankAccount.getAccountNumber()).isEqualTo(00126);
+    }
+
+    @Test
+    public void canSetAccountNumber(){
+        bankAccount.setAccountNumber(00127);
+        assertThat(bankAccount.getAccountNumber()).isEqualTo(00127);
+    }
+
+    @Test
+    public void canGetBalance(){
+        assertThat(bankAccount.getBalance()).isEqualTo(0);
+    }
+
+    @Test
+    public void canSetBalance(){
+        bankAccount.setBalance(100);
+        assertThat(bankAccount.getBalance()).isEqualTo(100);
     }
 
 }
-
-}
-
